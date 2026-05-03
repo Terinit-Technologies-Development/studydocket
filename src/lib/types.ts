@@ -90,3 +90,13 @@ export interface StudySession {
   status: StudySessionStatus;
   reflectionNotes?: string;
 }
+
+export interface Note {
+  id: string;
+  title: string;
+  moduleId: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  tags: string[];
+}

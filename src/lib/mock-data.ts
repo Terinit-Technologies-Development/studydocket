@@ -5,6 +5,7 @@ import type {
   Assignment,
   Assessment,
   StudySession,
+  Note,
 } from "./types";
 
 export const user: User = {
@@ -247,5 +248,68 @@ export const studySessions: StudySession[] = [
     goal: "Review lecture notes and create a consideration flowchart.",
     status: "completed",
     reflectionNotes: "Feeling stronger on the topic. Need to revisit promissory estoppel.",
+  },
+];
+
+export const notes: Note[] = [
+  {
+    id: "note-1",
+    title: "Judicial Review — Key Grounds",
+    moduleId: "mod-conlaw",
+    content:
+      "Illegality — ultra vires, improper purpose, relevant/irrelevant considerations.\nProcedural impropriety — natural justice, duty to consult, bias.\nIrrationality — Wednesbury unreasonableness.\nProportionality — Human Rights Act s.6, GCHQ.\nLegitimate expectation — procedural vs substantive.",
+    createdAt: "2026-04-28",
+    updatedAt: "2026-05-02",
+    tags: ["judicial-review", "key-concepts", "exam"],
+  },
+  {
+    id: "note-2",
+    title: "Offer & Acceptance — Flowchart",
+    moduleId: "mod-contracts",
+    content:
+      "1. Is there an offer?\n  - Invitation to treat vs offer (Fisher v Bell, P/SG v Boots)\n  - Unilateral vs bilateral\n2. Was the offer accepted?\n  - Mirror image rule\n  - Postal rule (Adams v Lindsell)\n  - Electronic communications\n3. Was acceptance communicated?\n  - Silence is not acceptance (Felthouse v Bindley)",
+    createdAt: "2026-05-01",
+    updatedAt: "2026-05-03",
+    tags: ["offer-acceptance", "flowchart", "exam"],
+  },
+  {
+    id: "note-3",
+    title: "Actus Reus & Mens Rea Summary",
+    moduleId: "mod-criminal",
+    content:
+      "Actus Reus:\n- Conduct, circumstance, result\n- Omissions — only liable if duty exists (statutory, contractual, relationship, assumption of care, creation of danger)\n- Causation — factual (but-for) and legal (operating and substantial cause)\n\nMens Rea:\n- Intention — direct vs oblique (Woollin)\n- Recklessness — Cunningham subjective\n- Negligence — objective standard\n- Strict liability offences — no MR required",
+    createdAt: "2026-04-20",
+    updatedAt: "2026-04-30",
+    tags: ["actus-reus", "mens-rea", "core-principles"],
+  },
+  {
+    id: "note-4",
+    title: "Contract — Consideration Cheatsheet",
+    moduleId: "mod-contracts",
+    content:
+      "Definition: Currie v Misa — benefit/detriment.\nRules:\n- Must be sufficient but need not be adequate (Chappell v Nestle)\n- Past consideration is not valid (Re McArdle)\n- Performance of existing duty (Stilk v Myrick, Williams v Roffey Bros)\n- Part-payment of debt (Pinnel's Case, Foakes v Beer)\nPromissory estoppel: Central London Property Trust v High Trees House.",
+    createdAt: "2026-04-25",
+    updatedAt: "2026-04-25",
+    tags: ["consideration", "cheatsheet"],
+  },
+  {
+    id: "note-5",
+    title: "Legal Research — Source Hierarchy",
+    moduleId: "mod-research",
+    content:
+      "Primary sources:\n1. Legislation (Acts, statutory instruments)\n2. Case law (law reports, transcripts)\n\nSecondary sources:\n1. Textbooks and practitioner works\n2. Journal articles (LQR, MLR, CLJ)\n3. Halsbury's Laws of England\n4. Hansard (limited use — Pepper v Hart)\n\nDatabases: Westlaw, LexisNexis, BAILII, HeinOnline.",
+    createdAt: "2026-05-02",
+    updatedAt: "2026-05-02",
+    tags: ["research", "sources", "methodology"],
+  },
+  {
+    id: "note-6",
+    title: "Parliamentary Sovereignty — Dicey",
+    moduleId: "mod-conlaw",
+    content:
+      "Dicey's three principles:\n1. Parliament can make or unmake any law\n2. No person or body can override Parliament\n3. No Parliament can bind its successors\n\nChallenges:\n- EU membership (Factortame)\n- HRA 1998 s.3-4 (declarations of incompatibility)\n- Devolution (Scotland Act)\n- Common law constitutionalism (Jackson v AG)",
+    createdAt: "2026-05-03",
+    updatedAt: "2026-05-03",
+    tags: ["parliamentary-sovereignty", "dicey", "exam"],
   },
 ];

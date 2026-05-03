@@ -8,7 +8,7 @@ import {
   Calendar,
   BookOpen,
   ClipboardList,
-  BarChart3,
+  StickyNote,
 } from "lucide-react";
 
 interface BottomNavigationProps {
@@ -20,7 +20,7 @@ const navItems = [
   { href: "/calendar", label: "Calendar", icon: Calendar },
   { href: "/modules", label: "Modules", icon: BookOpen },
   { href: "/assignments", label: "Tasks", icon: ClipboardList },
-  { href: "/overview", label: "Overview", icon: BarChart3 },
+  { href: "/overview", label: "Notes", icon: StickyNote },
 ];
 
 export function BottomNavigation({

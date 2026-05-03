@@ -1,7 +1,11 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { BookOpen, ChevronRight, FileText, Gavel, Menu, Plus, Scale, Search, Shield } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Card } from "@/components/ui/Card";
+import { AddModuleForm } from "@/components/forms/AddModuleForm";
 import { modules } from "@/lib/mock-data";
 
 const iconMap = {
@@ -21,6 +25,8 @@ const lecturerOverrides: Record<string, string> = {
 };
 
 export default function ModulesPage() {
+  const [showAddModule, setShowAddModule] = useState(false);
+
   return (
     <AppShell showNav>
       <header className="grid grid-cols-3 items-center py-3">
@@ -28,7 +34,11 @@ export default function ModulesPage() {
           <Menu size={21} />
         </button>
         <h1 className="text-center text-lg font-semibold">Modules</h1>
-        <button aria-label="Add module" className="justify-self-end rounded-full bg-deep-black p-1 text-soft-white">
+        <button
+          aria-label="Add module"
+          onClick={() => setShowAddModule(true)}
+          className="justify-self-end rounded-full bg-deep-black p-1 text-soft-white"
+        >
           <Plus size={17} />
         </button>
       </header>
@@ -72,6 +82,8 @@ export default function ModulesPage() {
           );
         })}
       </section>
+
+      <AddModuleForm open={showAddModule} onClose={() => setShowAddModule(false)} />
     </AppShell>
   );
 }

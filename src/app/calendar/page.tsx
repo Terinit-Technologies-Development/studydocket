@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { ChevronDown, ChevronRight, Clock3, MapPin, Plus } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
+import { AddEventForm } from "@/components/forms/AddEventForm";
 import { cn } from "@/lib/utils";
 
 type View = "Day" | "Week" | "Month" | "Agenda";
@@ -115,6 +115,7 @@ const agendaItems = [
 
 export default function CalendarPage() {
   const [view, setView] = useState<View>("Week");
+  const [showAddEvent, setShowAddEvent] = useState(false);
 
   return (
     <AppShell showNav>
@@ -144,15 +145,17 @@ export default function CalendarPage() {
         ))}
       </div>
 
-      {view === "Day" && <DayView />}
-      {view === "Week" && <WeekView />}
-      {view === "Month" && <MonthView />}
-      {view === "Agenda" && <AgendaView />}
+      {view === "Day" && <DayView onAddEvent={() => setShowAddEvent(true)} />}
+      {view === "Week" && <WeekView onAddEvent={() => setShowAddEvent(true)} />}
+      {view === "Month" && <MonthView onAddEvent={() => setShowAddEvent(true)} />}
+      {view === "Agenda" && <AgendaView onAddEvent={() => setShowAddEvent(true)} />}
+
+      <AddEventForm open={showAddEvent} onClose={() => setShowAddEvent(false)} />
     </AppShell>
   );
 }
 
-function DayView() {
+function DayView({ onAddEvent }: { onAddEvent: () => void }) {
   return (
     <section className="mt-5">
       <div className="flex items-center justify-between">
@@ -193,19 +196,19 @@ function DayView() {
           </div>
         ))}
 
-        <Link
-          href="/events/new"
+        <button
+          onClick={onAddEvent}
           className="absolute bottom-5 right-5 flex h-14 w-14 items-center justify-center rounded-full bg-deep-black text-soft-white shadow-lg"
           aria-label="Add event"
         >
           <Plus size={26} />
-        </Link>
+        </button>
       </div>
     </section>
   );
 }
 
-function WeekView() {
+function WeekView({ onAddEvent }: { onAddEvent: () => void }) {
   return (
     <section className="mt-5">
       <div className="ml-12 grid grid-cols-7 text-center">
@@ -255,19 +258,19 @@ function WeekView() {
           </div>
         ))}
 
-        <Link
-          href="/events/new"
+        <button
+          onClick={onAddEvent}
           className="absolute bottom-5 right-5 flex h-14 w-14 items-center justify-center rounded-full bg-deep-black text-soft-white shadow-lg"
           aria-label="Add event"
         >
           <Plus size={26} />
-        </Link>
+        </button>
       </div>
     </section>
   );
 }
 
-function MonthView() {
+function MonthView({ onAddEvent }: { onAddEvent: () => void }) {
   return (
     <section className="mt-5">
       <div className="grid grid-cols-7 text-center">
@@ -343,18 +346,18 @@ function MonthView() {
         ))}
       </div>
 
-      <Link
-        href="/events/new"
+      <button
+        onClick={onAddEvent}
         className="fixed bottom-24 right-[calc(50%-12rem)] flex h-14 w-14 items-center justify-center rounded-full bg-deep-black text-soft-white shadow-lg"
         aria-label="Add event"
       >
         <Plus size={26} />
-      </Link>
+      </button>
     </section>
   );
 }
 
-function AgendaView() {
+function AgendaView({ onAddEvent }: { onAddEvent: () => void }) {
   return (
     <section className="mt-5 space-y-6">
       {(["Wed, 14 May", "Thu, 15 May", "Fri, 16 May"] as const).map((dateLabel) => {
@@ -397,13 +400,13 @@ function AgendaView() {
         );
       })}
 
-      <Link
-        href="/events/new"
+      <button
+        onClick={onAddEvent}
         className="fixed bottom-24 right-[calc(50%-12rem)] flex h-14 w-14 items-center justify-center rounded-full bg-deep-black text-soft-white shadow-lg"
         aria-label="Add event"
       >
         <Plus size={26} />
-      </Link>
+      </button>
     </section>
   );
 }

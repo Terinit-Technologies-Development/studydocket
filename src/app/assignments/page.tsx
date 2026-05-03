@@ -1,9 +1,13 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { CalendarDays, ClipboardList, FileText, Filter, Menu, Plus } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Progress } from "@/components/ui/Progress";
+import { AddTaskForm } from "@/components/forms/AddTaskForm";
 import { assignments } from "@/lib/mock-data";
 import { cn, formatDate, priorityLabel, priorityVariant } from "@/lib/utils";
 
@@ -17,6 +21,8 @@ function statusLabel(status: string) {
 }
 
 export default function AssignmentsPage() {
+  const [showAddTask, setShowAddTask] = useState(false);
+
   return (
     <AppShell showNav>
       <header className="grid grid-cols-3 items-center py-3">
@@ -28,7 +34,11 @@ export default function AssignmentsPage() {
           <button aria-label="Filter assignments" className="rounded-full p-2">
             <Filter size={18} />
           </button>
-          <button aria-label="Add assignment" className="rounded-full bg-deep-black p-1 text-soft-white">
+          <button
+            aria-label="Add assignment"
+            onClick={() => setShowAddTask(true)}
+            className="rounded-full bg-deep-black p-1 text-soft-white"
+          >
             <Plus size={17} />
           </button>
         </div>
@@ -85,6 +95,8 @@ export default function AssignmentsPage() {
           );
         })}
       </section>
+
+      <AddTaskForm open={showAddTask} onClose={() => setShowAddTask(false)} />
     </AppShell>
   );
 }
