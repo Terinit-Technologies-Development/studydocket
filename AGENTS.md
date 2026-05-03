@@ -4,7 +4,7 @@
 
 StudyDocket is a **mobile-first personal law school planner** built with Next.js, TypeScript, and Tailwind CSS. It helps a law student manage classes, assignments, tests, exams, study sessions, reading deadlines, notes, and personal events.
 
-**Current phase:** Frontend-only with mock data. No backend, no auth, no database, no AI integration yet.
+**Current phase:** Supabase backend connected. Auth is UI-only (deferred). Data flows from Supabase Postgres database.
 
 ## Tech stack
 
@@ -15,7 +15,8 @@ StudyDocket is a **mobile-first personal law school planner** built with Next.js
 | Styling        | Tailwind CSS v4 (`@theme` syntax) |
 | Icons          | lucide-react                      |
 | State          | React `useState` (no external lib)|
-| Data           | Local mock data (`src/lib/mock-data.ts`) |
+| Data           | Supabase Postgres (`@supabase/supabase-js`) |
+| Backend        | Supabase (Postgres, Storage, Auth — deferred) |
 | Package manager| npm                               |
 
 ## Project structure
@@ -66,13 +67,14 @@ Design system documented in `design.md` (root).
 
 ## Key conventions
 
-1. **No backend** — all data comes from `src/lib/mock-data.ts`. Import directly.
-2. **Client components** use `"use client"` directive at the top.
-3. **Mobile-first** — `AppShell` wraps pages in a centered `max-w-md` container.
-4. **Bottom nav** appears on pages using `<AppShell showNav>` — the component auto-detects active route via `usePathname()`.
-5. **Modals** use the `Modal` component + a form component from `src/components/forms/`. They lift open/close state into the page.
-6. **Colours** are defined as Tailwind v4 `@theme inline` tokens in `globals.css`. Use semantic names like `bg-deep-black`, `text-grey-text`, `border-grey-border`.
-7. **Types** live in `src/lib/types.ts`. Add new types there, then add mock data in `src/lib/mock-data.ts`.
+1. **Data comes from Supabase** — all queries go through `src/lib/data.ts` using `@supabase/supabase-js`. Use `fetchEvents()`, `fetchModules()`, etc.
+2. **Client components** use `"use client"` directive at the top. Data is fetched via `useEffect` + async functions from `@/lib/data`.
+3. **Supabase client** is initialised in `src/lib/supabase.ts` using env vars `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+4. **RLS policies** are currently permissive (`TO anon, authenticated USING (true)`) — marked with TODO to lock down when auth is wired.
+5. **Auth is deferred** — login page is UI-only. Hardcoded user ID `00000000-0000-0000-0000-000000000001` is used for all data operations.
+6. **Mobile-first** — `AppShell` wraps pages in a centered `max-w-md` container.
+7. **Bottom nav** appears on pages using `<AppShell showNav>` — the component auto-detects active route via `usePathname()`.
+8. **Modals** use the `Modal` component + a form component from `src/components/forms/`.
 
 ## What NOT to add yet
 

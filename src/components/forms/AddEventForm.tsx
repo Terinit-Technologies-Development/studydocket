@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import type { EventType, Priority } from "@/lib/types";
-import { modules } from "@/lib/mock-data";
+import type { EventType, Priority, Module } from "@/lib/types";
+import { fetchModules } from "@/lib/data";
 
 interface AddEventFormProps {
   open: boolean;
@@ -27,6 +27,7 @@ const priorities: { value: Priority; label: string }[] = [
 ];
 
 export function AddEventForm({ open, onClose }: AddEventFormProps) {
+  const [modules, setModules] = useState<Module[]>([]);
   const [type, setType] = useState<EventType>("class");
   const [title, setTitle] = useState("");
   const [moduleId, setModuleId] = useState("");
@@ -36,6 +37,10 @@ export function AddEventForm({ open, onClose }: AddEventFormProps) {
   const [location, setLocation] = useState("");
   const [priority, setPriority] = useState<Priority>("medium");
   const [notes, setNotes] = useState("");
+
+  useEffect(() => {
+    if (open) fetchModules().then(setModules);
+  }, [open]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

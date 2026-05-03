@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { BookOpen, ChevronRight, FileText, Gavel, Menu, Plus, Scale, Search, Shield } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Card } from "@/components/ui/Card";
 import { AddModuleForm } from "@/components/forms/AddModuleForm";
-import { modules } from "@/lib/mock-data";
+import { fetchModules } from "@/lib/data";
+import type { Module } from "@/lib/types";
 
 const iconMap = {
   scale: Scale,
@@ -17,15 +18,20 @@ const iconMap = {
 };
 
 const lecturerOverrides: Record<string, string> = {
-  "mod-conlaw": "Prof. A. Williams",
-  "mod-contracts": "Dr. M. Johnson",
-  "mod-criminal": "Dr. L. Adams",
-  "mod-skills": "Prof. S. Patel",
-  "mod-research": "Dr. T. Moore",
+  "00000000-0000-0000-0000-000000000101": "Prof. A. Williams",
+  "00000000-0000-0000-0000-000000000102": "Dr. M. Johnson",
+  "00000000-0000-0000-0000-000000000103": "Dr. L. Adams",
+  "00000000-0000-0000-0000-000000000104": "Prof. S. Patel",
+  "00000000-0000-0000-0000-000000000105": "Dr. T. Moore",
 };
 
 export default function ModulesPage() {
+  const [modules, setModules] = useState<Module[]>([]);
   const [showAddModule, setShowAddModule] = useState(false);
+
+  useEffect(() => {
+    fetchModules().then(setModules);
+  }, []);
 
   return (
     <AppShell showNav>
@@ -44,12 +50,12 @@ export default function ModulesPage() {
       </header>
 
       <section className="mt-4 space-y-3">
-        {modules.map((module, index) => {
-          const Icon = iconMap[module.icon as keyof typeof iconMap] ?? Gavel;
+        {modules.map((mod, index) => {
+          const Icon = iconMap[mod.icon as keyof typeof iconMap] ?? Gavel;
           const active = index === 0;
 
           return (
-            <Link key={module.id} href={`/modules/${module.id}`}>
+            <Link key={mod.id} href={`/modules/${mod.id}`}>
               <Card padding="sm" className="flex items-center gap-4 rounded-xl">
                 <div
                   className={
@@ -61,9 +67,9 @@ export default function ModulesPage() {
                   <Icon size={25} strokeWidth={1.8} />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h2 className="truncate text-sm font-semibold">{module.name}</h2>
+                  <h2 className="truncate text-sm font-semibold">{mod.name}</h2>
                   <p className="mt-1 text-xs text-grey-text">
-                    {lecturerOverrides[module.id] ?? module.lecturerName}
+                    {lecturerOverrides[mod.id] ?? mod.lecturerName}
                   </p>
                 </div>
                 {index < 3 ? (

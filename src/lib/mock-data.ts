@@ -24,6 +24,7 @@ export const modules: Module[] = [
     color: "#050505",
     icon: "scale",
     notes: "Monday and Wednesday lectures, case-heavy reading load.",
+    topics: [],
   },
   {
     id: "mod-contracts",
@@ -32,6 +33,7 @@ export const modules: Module[] = [
     color: "#C8A24A",
     icon: "file-text",
     notes: "Focus on offer, acceptance, and consideration this term.",
+    topics: [],
   },
   {
     id: "mod-criminal",
@@ -40,6 +42,7 @@ export const modules: Module[] = [
     color: "#F3C6BD",
     icon: "shield",
     notes: "Problem-question heavy. Practice applying actus reus and mens rea.",
+    topics: [],
   },
   {
     id: "mod-skills",
@@ -48,6 +51,7 @@ export const modules: Module[] = [
     color: "#CAD2C5",
     icon: "book-open",
     notes: "Covers legal writing, research, and advocacy. Weekly writing tasks.",
+    topics: [],
   },
   {
     id: "mod-research",
@@ -56,6 +60,7 @@ export const modules: Module[] = [
     color: "#EFE7D0",
     icon: "search",
     notes: "Library and database skills. Research essay due end of term.",
+    topics: [],
   },
 ];
 

@@ -1,8 +1,12 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { ChevronRight, Filter, Menu, Plus, Scale } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { assessments } from "@/lib/mock-data";
+import { fetchAssessments } from "@/lib/data";
+import type { Assessment } from "@/lib/types";
 import { cn, formatDate, priorityLabel, priorityVariant } from "@/lib/utils";
 
 const tabs = ["Upcoming", "Completed"];
@@ -14,6 +18,12 @@ function confidenceLabel(level: number) {
 }
 
 export default function AssessmentsPage() {
+  const [assessments, setAssessments] = useState<Assessment[]>([]);
+
+  useEffect(() => {
+    fetchAssessments().then(setAssessments);
+  }, []);
+
   return (
     <AppShell showNav>
       <header className="grid grid-cols-3 items-center py-3">

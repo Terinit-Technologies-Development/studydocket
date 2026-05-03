@@ -1,8 +1,12 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Bell, Crown, Menu } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { assignments, events, modules, studySessions, user } from "@/lib/mock-data";
+import { fetchEvents, fetchAssignments, fetchStudySessions, fetchUser, fetchModules } from "@/lib/data";
+import type { Module, Event, Assignment, StudySession, User } from "@/lib/types";
 import { formatTime, priorityLabel, priorityVariant } from "@/lib/utils";
 
 const weekDays = [
@@ -15,11 +19,35 @@ const weekDays = [
   { label: "Sun", day: "18" },
 ];
 
-function moduleName(moduleId?: string) {
-  return modules.find((module) => module.id === moduleId)?.name ?? "Personal";
+function moduleName(modules: Module[], moduleId?: string) {
+  return modules.find((mod) => mod.id === moduleId)?.name ?? "Personal";
 }
 
 export default function DashboardPage() {
+  const [user, setUser] = useState<User | null>(null);
+  const [modules, setModules] = useState<Module[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [studySessions, setStudySessions] = useState<StudySession[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      const [u, mods, evts, asgns, ss] = await Promise.all([
+        fetchUser(),
+        fetchModules(),
+        fetchEvents(),
+        fetchAssignments(),
+        fetchStudySessions(),
+      ]);
+      setUser(u);
+      setModules(mods);
+      setEvents(evts);
+      setAssignments(asgns);
+      setStudySessions(ss);
+    }
+    load();
+  }, []);
+
   const todaysEvents = events.slice(0, 3);
   const upcomingAssignments = assignments.slice(0, 2);
   const nextSession = studySessions[2];
@@ -37,7 +65,7 @@ export default function DashboardPage() {
 
       <section className="space-y-1 pt-2">
         <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
-          Good morning, {user.name.split(" ")[0]}
+          Good morning, {user?.name?.split(" ")[0] ?? "Student"}
           <Crown size={18} className="text-muted-gold" />
         </h1>
         <p className="text-sm text-grey-text">You&apos;ve got this. One step at a time.</p>
@@ -79,9 +107,9 @@ export default function DashboardPage() {
               </div>
               <div>
                 <p className="font-semibold leading-tight">{event.title.replace(" — ", " ")}</p>
-                <p className="mt-0.5 text-grey-text">{moduleName(event.moduleId)}</p>
+                <p className="mt-0.5 text-grey-text">{moduleName(modules, event.moduleId)}</p>
               </div>
-              <Badge>{moduleName(event.moduleId).split(" ").slice(0, 2).join(" ")}</Badge>
+              <Badge>{moduleName(modules, event.moduleId).split(" ").slice(0, 2).join(" ")}</Badge>
             </div>
           ))}
         </div>
@@ -121,7 +149,7 @@ export default function DashboardPage() {
         </div>
         <div className="text-xs">
           <p className="text-grey-text">Today, 6:00 PM - 8:00 PM</p>
-          <p className="mt-1 font-semibold">{nextSession.title.replace(" — Consideration Recap", ": Offer & Acceptance")}</p>
+          <p className="mt-1 font-semibold">{nextSession?.title?.replace(" — Consideration Recap", ": Offer & Acceptance") ?? "No sessions"}</p>
           <p className="mt-1 text-grey-text">Goal: Finish reading and case notes</p>
         </div>
       </Card>

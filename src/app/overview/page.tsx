@@ -1,19 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { ChevronRight, Menu, Plus, Search, StickyNote } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { AddNoteForm } from "@/components/forms/AddNoteForm";
-import { modules, notes } from "@/lib/mock-data";
+import { fetchModules, fetchNotes } from "@/lib/data";
+import type { Module, Note } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-function moduleById(id: string) {
-  return modules.find((mod) => mod.id === id);
-}
-
-function formatDate(iso: string) {
+function formatDateStr(iso: string) {
   return new Date(iso).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
@@ -22,17 +20,28 @@ function formatDate(iso: string) {
 }
 
 const moduleColors: Record<string, { bg: string; text: string }> = {
-  "mod-conlaw": { bg: "bg-deep-black", text: "text-soft-white" },
-  "mod-contracts": { bg: "bg-muted-gold/20", text: "text-deep-black" },
-  "mod-criminal": { bg: "bg-muted-blush/30", text: "text-deep-black" },
-  "mod-skills": { bg: "bg-sage/30", text: "text-deep-black" },
-  "mod-research": { bg: "bg-soft-beige/60", text: "text-deep-black" },
+  "00000000-0000-0000-0000-000000000101": { bg: "bg-deep-black", text: "text-soft-white" },
+  "00000000-0000-0000-0000-000000000102": { bg: "bg-muted-gold/20", text: "text-deep-black" },
+  "00000000-0000-0000-0000-000000000103": { bg: "bg-muted-blush/30", text: "text-deep-black" },
+  "00000000-0000-0000-0000-000000000104": { bg: "bg-sage/30", text: "text-deep-black" },
+  "00000000-0000-0000-0000-000000000105": { bg: "bg-soft-beige/60", text: "text-deep-black" },
 };
 
 export default function NotesPage() {
+  const [modules, setModules] = useState<Module[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [showAddNote, setShowAddNote] = useState(false);
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+
+  function loadNotes() {
+    fetchNotes().then(setNotes);
+  }
+
+  useEffect(() => {
+    fetchModules().then(setModules);
+    loadNotes();
+  }, []);
 
   const filteredNotes = notes.filter((note) => {
     const matchesSearch =
@@ -42,6 +51,8 @@ export default function NotesPage() {
     const matchesModule = !selectedModule || note.moduleId === selectedModule;
     return matchesSearch && matchesModule;
   });
+
+  const moduleById = (id: string) => modules.find((mod) => mod.id === id);
 
   return (
     <AppShell showNav>
@@ -134,7 +145,8 @@ export default function NotesPage() {
           const color = mod ? moduleColors[mod.id] : { bg: "bg-grey-surface", text: "text-deep-black" };
 
           return (
-            <Card key={note.id} padding="sm" className="rounded-xl">
+            <Link key={note.id} href={`/overview/${note.id}`}>
+            <Card padding="sm" className="rounded-xl">
               <div className="flex items-start gap-3">
                 <div
                   className={cn(
@@ -169,17 +181,18 @@ export default function NotesPage() {
                       ))}
                     </div>
                     <span className="text-[11px] text-grey-text">
-                      {formatDate(note.updatedAt)}
+                      {formatDateStr(note.updatedAt)}
                     </span>
                   </div>
                 </div>
               </div>
             </Card>
+            </Link>
           );
         })}
       </section>
 
-      <AddNoteForm open={showAddNote} onClose={() => setShowAddNote(false)} />
+      <AddNoteForm open={showAddNote} onClose={() => { setShowAddNote(false); loadNotes(); }} />
     </AppShell>
   );
 }

@@ -35,6 +35,7 @@ export interface Module {
   color: string;
   icon: string;
   notes: string;
+  topics: string[];
 }
 
 export interface Event {
@@ -99,4 +100,26 @@ export interface Note {
   createdAt: string;
   updatedAt: string;
   tags: string[];
+}
+
+export interface AssignmentAttachment {
+  id: string;
+  assignmentId: string;
+  userId: string;
+  fileName: string;
+  filePath: string;
+  fileSize: number;
+  fileType: string;
+  createdAt: string;
+}
+
+export interface NoteAttachment {
+  id: string;
+  noteId: string;
+  userId: string;
+  fileName: string;
+  filePath: string;
+  fileSize: number;
+  fileType: string;
+  createdAt: string;
 }

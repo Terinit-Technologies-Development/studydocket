@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import type { Priority } from "@/lib/types";
-import { modules } from "@/lib/mock-data";
+import type { Priority, Module } from "@/lib/types";
+import { fetchModules } from "@/lib/data";
 
 interface AddTaskFormProps {
   open: boolean;
@@ -24,6 +24,11 @@ export function AddTaskForm({ open, onClose }: AddTaskFormProps) {
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState<Priority>("medium");
   const [estimatedHours, setEstimatedHours] = useState("");
+  const [modules, setModules] = useState<Module[]>([]);
+
+  useEffect(() => {
+    if (open) fetchModules().then(setModules);
+  }, [open]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

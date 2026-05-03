@@ -4,6 +4,30 @@ All notable changes to StudyDocket will be documented in this file.
 
 ---
 
+## [0.5.0] — 2026-05-03
+
+### Added
+- **Supabase backend integration** — all data now flows from Supabase Postgres
+- `@supabase/supabase-js` dependency installed
+- `.env.local` with `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `src/lib/supabase.ts` — singleton Supabase client
+- `src/lib/data.ts` — typed data access layer with mapper functions
+- **10 database migrations:** users, modules, events, assignments, assessments, study_sessions, notes, note_attachments, seed_data, rls_policies
+- **File upload support in AddNoteForm** — file picker, multi-file upload, attachment records
+- 4 form components now fetch modules from Supabase
+
+### Changed
+- All 5 main pages now fetch from Supabase via `useEffect` + `@/lib/data`
+- AGENTS.md updated for Supabase
+- `mock-data.ts` retained for reference but no longer imported by pages
+
+### Known limitations
+- Storage bucket `note-attachments` must be created manually via Supabase Dashboard
+- Auth remains UI-only — hardcoded user ID
+- RLS policies are permissive (TODO: lock down when auth is wired)
+
+---
+
 ## [0.4.0] — 2026-05-03
 
 ### Added

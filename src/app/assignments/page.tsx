@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CalendarDays, ClipboardList, FileText, Filter, Menu, Plus } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Progress } from "@/components/ui/Progress";
 import { AddTaskForm } from "@/components/forms/AddTaskForm";
-import { assignments } from "@/lib/mock-data";
+import { fetchAssignments } from "@/lib/data";
+import type { Assignment } from "@/lib/types";
 import { cn, formatDate, priorityLabel, priorityVariant } from "@/lib/utils";
 
 const tabs = ["All", "Not Started", "In Progress", "Completed"];
@@ -21,7 +22,12 @@ function statusLabel(status: string) {
 }
 
 export default function AssignmentsPage() {
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [showAddTask, setShowAddTask] = useState(false);
+
+  useEffect(() => {
+    fetchAssignments().then(setAssignments);
+  }, []);
 
   return (
     <AppShell showNav>
