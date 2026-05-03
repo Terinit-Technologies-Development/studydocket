@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bell, Crown, Menu } from "lucide-react";
+import { Crown, LogOut, Menu } from "lucide-react";
+import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
@@ -58,9 +59,9 @@ export default function DashboardPage() {
         <button aria-label="Open menu" className="rounded-full p-2">
           <Menu size={21} />
         </button>
-        <button aria-label="Notifications" className="rounded-full p-2">
-          <Bell size={21} />
-        </button>
+        <Link href="/login" className="rounded-full p-2 text-grey-text hover:text-deep-black transition" aria-label="Log out">
+          <LogOut size={19} />
+        </Link>
       </header>
 
       <section className="space-y-1 pt-2">
